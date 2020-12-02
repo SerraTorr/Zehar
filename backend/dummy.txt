@@ -1,1 +1,71 @@
 All the backend config files and database access files in this direcctory
+<?php
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+	if(empty(test_input($_POST["name"])))
+	{
+		$NameError ="name should not be empty";
+	}
+	else
+	{
+		$name = test_input($_POST["name"]);
+	}
+
+	if(empty(test_input($_POST["pass"])))
+	{
+		$PassError ="pass should not be empty";
+	}
+	else
+	{
+		$pass = test_input($_POST["pass"]);
+	}
+
+	if(empty(test_input($_POST["email"])))
+	{
+		$EmailError ="Email should not be empty";
+	}
+	else
+	{
+		$email = test_input($_POST["email"]);
+	}
+}
+
+
+if (empty($NameError) && empty($PassError) && empty($EmailError))
+{
+	$stmt = $conn-> query("SELECT id from 'user' where name = '$name' and pass = '$pass' and email = '$email';");
+
+
+	if ($stmt -> excute())
+	{
+		if ($stmt -> rowcount() == 1)
+		{
+			session_start();
+			$_SESSION["name"] = $name;
+			header("location: thanks.php");
+		}
+		else
+		{
+			$erroe = "something went wrong";
+		}
+	}
+
+	$stmt = $conn-> query("INSERT INTO reservation VALUES ('$id', '$checkin', '$checkout', '$type', '$adults', '$children', '$requests', '$timestamp');
+		
+");
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<form action = "<?php echo htmlspecialchars($_SERVER["PHP_SELF"])?>" method = "post">
+		
+	</form>
+
+</body>
+</html>
